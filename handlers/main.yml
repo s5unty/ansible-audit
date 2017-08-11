@@ -1,4 +1,5 @@
 ---
 # handlers file for audit
 - name: restart auditd
-  service: name=auditd state=restarted
+# service: name=auditd state=restarted
+  shell: service auditd restart

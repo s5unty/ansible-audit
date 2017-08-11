@@ -6,6 +6,9 @@
 - include: setup-redhat.yml
   when: ansible_os_family == "RedHat"
 
+- include: setup-debian.yml
+  when: ansible_os_family == "Debian"
+
 - name: deploy auditd.conf
   template: >
       src=auditd.conf.j2
@@ -33,6 +36,16 @@
       backup=yes
   notify: restart auditd
   when: audit_stat.stat.exists
+
+- name: enable audit.rules
+  file: >
+      src=/etc/audit/rules.d/audit.rules
+      dest=/etc/audit/audit.rules
+      state=link
+      force=yes
+      backup=yes
+  notify: restart auditd
+  when: ( audit_stat.stat.exists and ansible_os_family == "Debian" )
 
 - name: deploy audit.rules
   copy: >

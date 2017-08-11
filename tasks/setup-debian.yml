@@ -1,0 +1,4 @@
+---
+- name: install audit packages
+  apt: name={{item}} state=installed
+  with_items: "{{ audit_pkgs }}"
